@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { DataSource, EntityTarget, ObjectLiteral, Repository } from 'typeorm';
+import { ExtractJwt, JwtFromRequestFunction } from 'passport-jwt';
 import {
   AUTH_CONFIG,
   AuthModuleConfig,
@@ -39,6 +40,12 @@ export class AuthService<
     if (this.userService.constructor.name === 'UseDefaultUserAuthService') {
       this.userService = new BaseUserAuthService(this.userRepository, opts);
     }
+  }
+
+  jwtExtractor(): JwtFromRequestFunction {
+    return this.opts.jwt.jwtFromRequest
+      ? this.opts.jwt.jwtFromRequest()
+      : ExtractJwt.fromAuthHeaderAsBearerToken();
   }
 
   async getLoginTokens(user: Entity): Promise<any> {
