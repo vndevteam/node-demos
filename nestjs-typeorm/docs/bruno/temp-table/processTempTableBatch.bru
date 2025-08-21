@@ -1,0 +1,25 @@
+meta {
+  name: processTempTableBatch
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{host}}/temp-table/{{sessionId}}/batch
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "values": [1, 2, 3]
+  }
+}
+
+vars:pre-request {
+  sessionId: 1
+}
+
+settings {
+  encodeUrl: true
+}

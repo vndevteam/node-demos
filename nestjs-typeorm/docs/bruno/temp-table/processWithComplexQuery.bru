@@ -1,0 +1,19 @@
+meta {
+  name: processWithComplexQuery
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{host}}/temp-table/{{sessionId}}/complex
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  sessionId: 1
+}
+
+settings {
+  encodeUrl: true
+}
