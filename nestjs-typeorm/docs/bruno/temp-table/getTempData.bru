@@ -1,0 +1,19 @@
+meta {
+  name: getTempData
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{host}}/temp-table/{{sessionId}}/data
+  body: none
+  auth: inherit
+}
+
+vars:pre-request {
+  sessionId: 1
+}
+
+settings {
+  encodeUrl: true
+}

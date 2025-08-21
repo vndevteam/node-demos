@@ -1,0 +1,25 @@
+meta {
+  name: insertTempData
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/temp-table/{{sessionId}}/data
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "value": "test for {{sessionId}}"
+  }
+}
+
+vars:pre-request {
+  sessionId: 1
+}
+
+settings {
+  encodeUrl: true
+}
