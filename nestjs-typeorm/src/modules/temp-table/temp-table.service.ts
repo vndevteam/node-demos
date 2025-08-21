@@ -183,7 +183,10 @@ export class TempTableService {
    * Escape identifiers to avoid SQL injection.
    */
   private safeIdent(name: string) {
-    if (!/^[a-zA-Z0-9_]+$/.test(name)) throw new Error('Bad identifier');
+    if (!/^[a-zA-Z0-9_]+$/.test(name))
+      throw new Error(
+        'Invalid identifier: only alphanumeric characters and underscores are allowed',
+      );
     return `"${name}"`;
   }
 }
