@@ -1,0 +1,39 @@
+meta {
+  name: 05. Sign Document (Conflict Test - Second Request)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/sign/{{conflictId}}
+  body: none
+  auth: none
+}
+
+docs {
+  ## Conflict Test - Second Request
+
+  This is the second request in the conflict test scenario.
+  Run the "First Request" and then immediately run this request
+  (within 8 seconds) to test the advisory lock conflict behavior.
+
+  This request should fail with 409 Conflict status.
+
+  **Important**: Run this within 8 seconds of the first request!
+}
+
+tests {
+  test("Status should be 409 Conflict", function() {
+    expect(res.getStatus()).to.equal(409);
+  });
+
+  test("Response should contain conflict message", function() {
+    expect(res.getBody().message).to.contain("Already in progress");
+    expect(res.getBody().message).to.contain(bru.getEnvVar("conflictId"));
+  });
+
+  test("Response should have error and statusCode", function() {
+    expect(res.getBody().error).to.equal("Conflict");
+    expect(res.getBody().statusCode).to.equal(409);
+  });
+}

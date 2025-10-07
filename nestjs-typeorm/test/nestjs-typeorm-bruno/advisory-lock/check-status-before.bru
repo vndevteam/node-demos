@@ -1,0 +1,29 @@
+meta {
+  name: 01. Check Document Status (Before Signing)
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/sign/{{documentId}}/status
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Document ID should match", function() {
+    expect(res.getBody().id).to.equal(bru.getEnvVar("documentId"));
+  });
+
+  test("Should not be in progress initially", function() {
+    expect(res.getBody().inProgress).to.equal(false);
+  });
+
+  test("Status should be available", function() {
+    expect(res.getBody().status).to.equal("available");
+  });
+}

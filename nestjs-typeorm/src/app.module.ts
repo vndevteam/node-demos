@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { TempTableModule } from './modules/temp-table/temp-table.module';
+import { LockModule } from './modules/lock/lock.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfigService } from './database/typeorm-config.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
@@ -19,7 +20,7 @@ const dbModule = TypeOrmModule.forRootAsync({
 });
 
 @Module({
-  imports: [ConfigModule.forRoot(), dbModule, TempTableModule],
+  imports: [ConfigModule.forRoot(), dbModule, TempTableModule, LockModule],
   controllers: [AppController],
   providers: [AppService],
 })

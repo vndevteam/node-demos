@@ -1,0 +1,47 @@
+meta {
+  name: 07. Parallel Requests - Document A
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/sign/parallel-doc-A
+  body: none
+  auth: none
+}
+
+docs {
+  ## Parallel Requests Test - Document A
+
+  This demonstrates that different document IDs can be processed in parallel.
+
+  Steps:
+  1. Run this request (Document A)
+  2. Immediately run "Parallel Requests - Document B"
+  3. Both should succeed and complete around the same time (~8 seconds)
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response should indicate success", function() {
+    expect(res.getBody().success).to.equal(true);
+  });
+
+  test("Response should contain success message", function() {
+    expect(res.getBody().message).to.contain("Sign request completed successfully");
+    expect(res.getBody().message).to.contain("parallel-doc-A");
+  });
+
+  test("Data should contain correct signId", function() {
+    expect(res.getBody().data.signId).to.equal("parallel-doc-A");
+  });
+
+  test("Process should take approximately 8 seconds", function() {
+    const duration = parseInt(res.getBody().data.duration);
+    expect(duration).to.be.greaterThan(7500);
+    expect(duration).to.be.lessThan(9000);
+  });
+}
