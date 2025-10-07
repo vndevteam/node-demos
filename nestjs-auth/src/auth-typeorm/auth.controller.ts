@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { LocalAuthGuard } from './guard/local-auth.guard';
+import { AccessTokenAuthGuard, LocalAuthGuard } from './guard/local-auth.guard';
 
 @Controller('')
 export class AuthController {
@@ -46,8 +46,19 @@ export class AuthController {
     );
   }
 
+  @HttpCode(200)
+  @UseGuards(AccessTokenAuthGuard)
+  @Post('logout')
+  async logout(@Req() req: Request) {
+    const accessToken = this.authService.jwtExtractor()(req);
+    return await this.authService.userService.onAfterLogout(
+      accessToken,
+    );
+  }
+
+  @UseGuards(AccessTokenAuthGuard)
   @Get('profile')
-  getProfile(req) {
+  getProfile(@Req() req: Request) {
     return req.user;
   }
 }
