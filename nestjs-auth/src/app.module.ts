@@ -5,7 +5,6 @@ import { AuthModule } from './auth-typeorm/auth.module';
 import { UsersModule } from './users/users.module';
 import { UserEntity } from './users/entities/user.entity';
 import { RegisterUserDto } from './users/dto/register-user.dto';
-import { DataSourceOptions } from 'typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from './config/configuration';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -18,7 +17,7 @@ import { dataSourceFactory } from './config/data-source';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        return config.get('database') as DataSourceOptions;
+        return config.get('database');
       },
       dataSourceFactory: dataSourceFactory,
     }),
