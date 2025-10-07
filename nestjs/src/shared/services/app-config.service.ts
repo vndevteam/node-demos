@@ -37,7 +37,6 @@ export class AppConfigService {
     return {
       entities,
       migrations,
-      keepConnectionAlive: !this.isTest,
       dropSchema: this.isTest,
       type: 'postgres',
       host: this.getString('DB_HOST'),
