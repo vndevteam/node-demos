@@ -1,0 +1,46 @@
+meta {
+  name: 06. Check Status During Signing
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/sign/{{conflictId}}/status
+  body: none
+  auth: none
+}
+
+docs {
+  ## Check Status During Signing
+
+  Use this request to check the status while a signing process is running.
+
+  Steps:
+  1. Start a sign request (e.g., Conflict First Request)
+  2. Immediately run this status check (within 8 seconds)
+  3. Should show inProgress: true, status: "signing"
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Document ID should match", function() {
+    expect(res.getBody().id).to.equal(bru.getEnvVar("conflictId"));
+  });
+
+  // Note: These tests might pass or fail depending on timing
+  // If run during signing, inProgress should be true
+  // If run after signing completes, inProgress should be false
+
+  test("Response should contain inProgress field", function() {
+    expect(res.getBody()).to.have.property('inProgress');
+    expect(res.getBody().inProgress).to.be.a('boolean');
+  });
+
+  test("Response should contain status field", function() {
+    expect(res.getBody()).to.have.property('status');
+    expect(res.getBody().status).to.be.oneOf(['available', 'signing']);
+  });
+}

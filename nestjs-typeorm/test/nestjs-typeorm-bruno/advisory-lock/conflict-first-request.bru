@@ -1,0 +1,46 @@
+meta {
+  name: 04. Sign Document (Conflict Test - First Request)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/sign/{{conflictId}}
+  body: none
+  auth: none
+}
+
+docs {
+  ## Conflict Test - First Request
+
+  This is the first request in the conflict test scenario.
+  Run this request and then immediately run the "Second Request"
+  to test the advisory lock conflict behavior.
+
+  This request should succeed and take ~8 seconds.
+}
+
+tests {
+  test("Status should be 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("Response should indicate success", function() {
+    expect(res.getBody().success).to.equal(true);
+  });
+
+  test("Response should contain success message", function() {
+    expect(res.getBody().message).to.contain("Sign request completed successfully");
+    expect(res.getBody().message).to.contain(bru.getEnvVar("conflictId"));
+  });
+
+  test("Data should contain signId", function() {
+    expect(res.getBody().data.signId).to.equal(bru.getEnvVar("conflictId"));
+  });
+
+  test("Process should take approximately 8 seconds", function() {
+    const duration = parseInt(res.getBody().data.duration);
+    expect(duration).to.be.greaterThan(7500);
+    expect(duration).to.be.lessThan(9000);
+  });
+}

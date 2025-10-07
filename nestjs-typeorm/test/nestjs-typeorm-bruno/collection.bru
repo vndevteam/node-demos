@@ -1,0 +1,25 @@
+docs {
+  # Advisory Lock Demo Collection
+
+  This Bruno collection tests the PostgreSQL Advisory Lock implementation
+  for the CloudSign simulation API in NestJS TypeORM project.
+
+  ## Quick Start
+  1. Ensure NestJS app is running on localhost:3000
+  2. Ensure PostgreSQL is connected and running
+  3. Select "local" environment
+  4. Run requests in sequence or test specific scenarios
+
+  ## Test Scenarios Available
+  - Basic flow testing
+  - Concurrent conflict testing
+  - Parallel processing with different IDs
+  - Error handling validation
+
+  ## Environment Variables
+  - baseUrl: http://localhost:3000
+  - documentId: test-document-123
+  - conflictId: conflict-test-456
+
+  Created for testing advisory lock behavior with PostgreSQL.
+}
