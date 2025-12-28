@@ -12,7 +12,7 @@ import {
   UserAuthServiceType,
 } from './types';
 import { AuthController } from './auth.controller';
-import { LocalStrategy } from './strategy/local.strategy';
+import { LocalStrategy, JwtAccessTokenStrategy } from './strategy/local.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { getOptions } from './helpers';
 
@@ -60,6 +60,7 @@ export class AuthModule {
         UserServiceClass,
         AuthService<Entity, JwtPayload, RegisterDto>,
         LocalStrategy<Entity>,
+        JwtAccessTokenStrategy<Entity, JwtPayload>,
       ],
       exports: [AuthService, USER_SERVICE, AUTH_CONFIG],
       controllers: opts.disableRouter ? [] : [AuthController],

@@ -74,4 +74,6 @@ export abstract class UserAuthServiceType<Entity, JwtPayloadSub, RegisterDto> {
     accessTokenExpiresAt: any,
     refreshTokenExpiresAt: any,
   ): Promise<any>;
+  abstract jwtValidator(payload: JwtPayloadSub): Promise<Entity>;
+  abstract onAfterLogout(accessToken: string): Promise<any>;
 }

@@ -208,4 +208,26 @@ export class BaseUserAuthService<
       expires_at: accessTokenExpiresAt,
     };
   }
+
+  async jwtValidator(payload: JwtPayloadSub) {
+    if (!payload.sub[this.IDField]) {
+      throw new Error('Invalid JWT payload');
+    }
+
+    const user = await this.userRepository.findOneBy({
+      [this.IDField]: payload.sub[this.IDField],
+    } as FindOptionsWhere<Entity>);
+
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+
+    // delete user[this.dbPasswordField];
+    return user;
+  }
+
+  async onAfterLogout(accessToken: string) {
+    // TODO custom your logic
+    return null;
+  }
 }
